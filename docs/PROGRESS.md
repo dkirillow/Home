@@ -44,3 +44,13 @@
 - `updateTaskSchema` = `createTaskSchema.partial()` + `status`: выполнение задачи — это `PATCH { status: 'DONE' }`.
 
 Дальше: B6 — подключить `@home/shared` в web (зона Даниила, по согласованию), B7 — PR в dev.
+
+### Лев: CI (ветка `chore/ci`)
+
+Готово: `.github/workflows/ci.yml` — на PR и push в `dev`/`main`: `pnpm install --frozen-lockfile`, `lint`, `typecheck`, unit-тесты. Node из `.nvmrc`, pnpm из `packageManager`, кеш pnpm.
+
+Проверено: те же команды на чистом клоне репо без `.env` — зелёные (shared 44, api 2). Сам workflow проверится на GitHub в первом PR.
+
+Решение: e2e в CI пока не гоняем — им нужен Postgres; запускаем локально.
+
+Нужно от Даниила (владелец репо): Settings → Branches → защита `dev`: merge только через PR и только с зелёным CI.
