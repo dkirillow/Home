@@ -1,5 +1,12 @@
-// Точка входа @home/shared. Всё, что экспортируется отсюда, — контракт
-// между web, api и mcp-server. Меняем отдельным маленьким PR, который
-// мержится первым, и пишем в чат «поменял схему X, подтяни dev».
+export * from './asset.js';
 export * from './auth.js';
+export * from './common.js';
+export * from './dashboard.js';
+export * from './dates.js';
+export * from './document.js';
+export * from './expense.js';
 export * from './household.js';
+export * from './payment.js';
+export * from './shopping.js';
+export * from './task.js';
+export * from './warranty.js';

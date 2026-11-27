@@ -1,4 +1,6 @@
 {
   "extends": "./tsconfig.json",
+  // Код пакета работает и в браузере: Node-типы (fs, process) нужны только тестам.
+  "compilerOptions": { "types": [] },
   "exclude": ["src/**/*.spec.ts"]
 }
