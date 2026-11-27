@@ -4,3 +4,8 @@ packages:
 allowBuilds:
   sharp: false
   unrs-resolver: false
+  # Prisma: install-скрипты нужны для движка миграций
+  prisma: true
+  "@prisma/engines": true
+  # телеметрия swagger-ui, не нужна
+  "@scarf/scarf": false
