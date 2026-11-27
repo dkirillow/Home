@@ -1,0 +1,30 @@
+{
+  "name": "@home/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Общие контракты Home: Zod-схемы, DTO-типы и константы для web, api и mcp-server",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}

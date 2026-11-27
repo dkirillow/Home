@@ -2,20 +2,18 @@ import { Body, Controller, INestApplication, Post } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types.js';
-import { z } from 'zod';
+import { registerSchema, type RegisterInput } from '@home/shared';
 import { AppModule } from './../src/app.module.js';
 import { setupApp } from './../src/setup-app.js';
 
 // e2e нужен запущенный Postgres: docker compose up -d db
 
-// Тестовый контроллер только для проверки глобального Zod-пайпа.
-const echoSchema = z.object({ name: z.string().min(1) });
-type EchoDto = z.infer<typeof echoSchema>;
-
+// Тестовый контроллер только для проверки глобального Zod-пайпа
+// со схемой из @home/shared (так же будет в настоящем AuthController).
 @Controller('echo')
 class EchoController {
   @Post()
-  echo(@Body({ schema: echoSchema }) body: EchoDto): EchoDto {
+  echo(@Body({ schema: registerSchema }) body: RegisterInput): RegisterInput {
     return body;
   }
 }
@@ -52,22 +50,24 @@ describe('API skeleton (e2e)', () => {
   it('Zod-пайп: неверное тело → 400', () => {
     return request(app.getHttpServer())
       .post('/api/echo')
-      .send({ name: '' })
+      .send({ email: 'lev.mail.ru', password: '123', name: '' })
       .expect(400);
   });
 
-  it('Zod-пайп: верное тело проходит', () => {
+  it('Zod-пайп: верное тело проходит и нормализуется схемой', () => {
     return request(app.getHttpServer())
       .post('/api/echo')
-      .send({ name: 'Холодильник' })
+      .send({ email: '  Lev@Mail.RU ', password: '12345678', name: ' Лев ' })
       .expect(201)
-      .expect({ name: 'Холодильник' });
+      .expect({ email: 'lev@mail.ru', password: '12345678', name: 'Лев' });
   });
 
-  it('Swagger отдаёт спецификацию с /api/health', async () => {
+  it('Swagger отдаёт спецификацию с /api/health и схемой тела', async () => {
     const res = await request(app.getHttpServer())
       .get('/api/docs-json')
       .expect(200);
     expect(res.body.paths).toHaveProperty('/api/health');
+    // Zod-схема из @home/shared попала в Swagger как тело запроса
+    expect(JSON.stringify(res.body.paths['/api/echo'])).toContain('password');
   });
 });
