@@ -1,1 +1,19 @@
+# зависимости
 node_modules/
+
+# результаты сборки
+dist/
+*.tsbuildinfo
+coverage/
+
+# сгенерированный Prisma Client (создаётся командой prisma generate)
+apps/api/src/generated/
+
+# секреты: в Git только .env.example
+.env
+.env.*
+!.env.example
+
+# системное
+.DS_Store
+*.log
