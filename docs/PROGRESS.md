@@ -29,4 +29,18 @@
 
 Решение: shared отдаёт собранный JS, а не `.ts` — собранный api (`node dist/main.js`) не умеет выполнять `.ts` из `node_modules`.
 
-Дальше: B3–B5 — константы, схемы и DTO остальных сущностей, `DashboardDto`, `getWarrantyStatus()`.
+### Лев: блок B, шаги B3–B5 — контракты всех сущностей (ветка `chore/shared-contracts`)
+
+Готово:
+- B3: массивы значений и `…_LABELS` для всех 7 enum Prisma, `TIMEZONE = 'Europe/Moscow'`, `toDateKey()` и `daysUntil()`.
+- B4: `create…Schema` / `update…Schema` (= `create.partial()`) / `…QuerySchema` / `…Dto` для asset, document, expense, payment, task, shopping; `MemberDto`. Ограничения файлов документов (10 МБ; PDF, JPG, PNG, WEBP).
+- B5: `DashboardDto`, `getWarrantyStatus()`.
+
+Проверено: 44 unit-теста shared (enum = Prisma, каждая входная схема конвертируется в OpenAPI, пустой PATCH ничего не подставляет, даты по Москве), typecheck, lint, api 2 unit + 5 e2e, `nest build`. `getWarrantyStatus()` проверен вручную на 4 случаях, unit-тест по плану пишет Даниил.
+
+Решения, отличающиеся от методички:
+- Даты на входе — ISO-строка + `transform`, а не `z.coerce.date()`: с `Date` Swagger падает на старте.
+- В create-схемах нет `.default()`: после `.partial()` default перезаписывал бы поле в PATCH.
+- `updateTaskSchema` = `createTaskSchema.partial()` + `status`: выполнение задачи — это `PATCH { status: 'DONE' }`.
+
+Дальше: B6 — подключить `@home/shared` в web (зона Даниила, по согласованию), B7 — PR в dev.

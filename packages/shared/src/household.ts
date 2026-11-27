@@ -17,3 +17,12 @@ export const householdSummarySchema = z.object({
   role: memberRoleSchema,
 });
 export type HouseholdSummaryDto = z.infer<typeof householdSummarySchema>;
+
+// GET /api/households/:hid/members (селект «Исполнитель» в задачах).
+export const memberSchema = z.object({
+  userId: z.string(),
+  name: z.string(),
+  email: z.string(),
+  role: memberRoleSchema,
+});
+export type MemberDto = z.infer<typeof memberSchema>;
