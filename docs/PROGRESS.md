@@ -19,4 +19,14 @@
 - `.env` лежит в `apps/api/`, а не в корне.
 - Postgres 17 (в методичке 16), тесты на Vitest (в методичке Jest).
 
-Дальше: блок B — `packages/shared`.
+### Лев: блок B, шаги B1–B2 — `@home/shared` и контракт auth (ветка `chore/shared-auth`)
+
+Готово:
+- Пакет `packages/shared` (`@home/shared`): ESM, собирается `tsc` в `dist/` (скрипт `prepare` при `pnpm install`, `dev` — watch). Подключён в api (`workspace:*`).
+- Схемы auth: `registerSchema`, `loginSchema`; DTO `UserDto`, `MeDto`, `McpTokenDto`, `HouseholdSummaryDto`; `MEMBER_ROLES`, `MEMBER_ROLE_LABELS`, `AUTH_COOKIE_NAME`.
+
+Проверено: 8 unit-тестов схем, typecheck и lint всего монорепо, e2e api со схемой из shared (400 на неверное тело, нормализация email, схема в Swagger), `nest build`, импорт из Node.
+
+Решение: shared отдаёт собранный JS, а не `.ts` — собранный api (`node dist/main.js`) не умеет выполнять `.ts` из `node_modules`.
+
+Дальше: B3–B5 — константы, схемы и DTO остальных сущностей, `DashboardDto`, `getWarrantyStatus()`.
