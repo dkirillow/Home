@@ -1,11 +1,15 @@
 import { INestApplication, StandardSchemaValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser'; //Преобразует Cookie в request.cookies
 
 export const API_PREFIX = 'api';
 
 // Общая настройка приложения. Вызывается и в main.ts, и в e2e-тестах,
 // чтобы тесты проверяли то же приложение, что запускается на самом деле.
 export function setupApp(app: INestApplication): void {
+
+  app.use(cookieParser());                                                  //Разбираем cookie до обработки запросов контроллерами
+
   // Все роуты начинаются с /api: /api/health, /api/auth/me, /api/households/...
   app.setGlobalPrefix(API_PREFIX);
 

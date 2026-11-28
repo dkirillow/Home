@@ -9,3 +9,4 @@ allowBuilds:
   "@prisma/engines": true
   # телеметрия swagger-ui, не нужна
   "@scarf/scarf": false
+  bcrypt: true
